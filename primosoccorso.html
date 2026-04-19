@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0a0e1a">
+<title>PrimoSoccorso BLS // Guida</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=DM+Mono:wght@400;500&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0a0e1a;
+    --surface:#12182a;
+    --surface2:#1a2138;
+    --ink:#f4f6fb;
+    --muted:#8a94b0;
+    --line:rgba(255,255,255,0.08);
+    --red:#ff3b3b;
+    --red2:#ff6b6b;
+    --amber:#ffb020;
+    --green:#22c55e;
+    --cyan:#38bdf8;
+    --accent:#ff3b3b;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none}
+  html,body{overflow-x:hidden}
+  body{
+    font-family:'Space Grotesk',-apple-system,sans-serif;
+    background:var(--bg);
+    color:var(--ink);
+    min-height:100vh;
+    line-height:1.5;
+    padding-bottom:90px;
+  }
+
+  /* DISCLAIMER BANNER */
+  .disclaimer-banner{
+    background:linear-gradient(90deg,#3a1d00,#2a1500);
+    border-bottom:1px solid rgba(255,176,32,0.3);
+    padding:10px 16px;
+    font-size:11px;
+    color:var(--amber);
+    display:flex;gap:8px;align-items:flex-start;
+    letter-spacing:0.2px;
+  }
+  .disclaimer-banner b{color:#ffd97a;font-weight:700}
+
+  /* HEADER */
+  header{
+    padding:20px 18px 12px;
+    border-bottom:1px solid var(--line);
+    position:sticky;top:0;background:rgba(10,14,26,0.95);z-index:50;
+    backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  }
+  .brand{
+    display:flex;align-items:baseline;gap:10px;
+  }
+  .brand-logo{
+    font-family:'Bebas Neue',sans-serif;
+    font-size:26px;letter-spacing:2px;
+    color:var(--red);
+  }
+  .brand-sub{
+    font-family:'DM Mono',monospace;font-size:10px;
+    color:var(--muted);letter-spacing:2px;text-transform:uppercase;
+  }
+  .srcnote{font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);margin-top:4px;letter-spacing:0.5px}
+
+  /* SOS BAR */
+  .sos-bar{
+    position:fixed;bottom:0;left:0;right:0;z-index:100;
+    background:linear-gradient(180deg,rgba(10,14,26,0) 0%,rgba(10,14,26,0.98) 30%);
+    padding:18px 14px 22px;
+    display:flex;gap:10px;
+  }
+  .sos-btn{
+    flex:1;
+    background:var(--red);
+    color:#fff;
+    border:none;
+    padding:16px;
+    border-radius:14px;
+    font-family:'Bebas Neue',sans-serif;
+    font-size:22px;letter-spacing:3px;
+    box-shadow:0 8px 24px rgba(255,59,59,0.4);
+    text-decoration:none;
+    display:flex;align-items:center;justify-content:center;gap:8px;
+    cursor:pointer;
+  }
+  .sos-btn.sec{background:var(--surface2);box-shadow:none;border:1px solid var(--line);font-size:14px;flex:0 0 auto;padding:16px 20px}
+
+  /* MAIN CONTENT */
+  main{padding:18px 14px}
+
+  /* TAB NAV */
+  .tabnav{
+    display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;
+    margin:0 -14px 16px;padding:0 14px 8px;
+    scrollbar-width:none;
+  }
+  .tabnav::-webkit-scrollbar{display:none}
+  .tabnav button{
+    background:var(--surface);
+    border:1px solid var(--line);
+    color:var(--muted);
+    padding:10px 16px;
+    border-radius:50px;
+    font-family:'DM Mono',monospace;
+    font-size:11px;letter-spacing:1px;
+    text-transform:uppercase;
+    white-space:nowrap;
+    cursor:pointer;
+    font-weight:500;
+  }
+  .tabnav button.active{
+    background:var(--red);border-color:var(--red);color:#fff;
+  }
+
+  /* SECTION */
+  .section{display:none}
+  .section.active{display:block;animation:fade 0.3s}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+  .section-title{
+    font-family:'Bebas Neue',sans-serif;font-size:30px;letter-spacing:2px;
+    margin-bottom:4px;line-height:1;
+  }
+  .section-sub{font-size:13px;color:var(--muted);margin-bottom:18px}
+
+  /* CARD */
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:16px;
+    margin-bottom:12px;
+  }
+  .card.red{border-left:3px solid var(--red)}
+  .card.amber{border-left:3px solid var(--amber)}
+  .card.green{border-left:3px solid var(--green)}
+  .card.cyan{border-left:3px solid var(--cyan)}
+
+  /* STEP */
+  .step{
+    display:flex;gap:14px;padding:14px 0;
+    border-bottom:1px solid var(--line);
+  }
+  .step:last-child{border-bottom:none}
+  .step-num{
+    flex:0 0 36px;height:36px;border-radius:50%;
+    background:var(--red);color:#fff;
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Bebas Neue',sans-serif;font-size:18px;
+  }
+  .step.amber .step-num{background:var(--amber)}
+  .step.green .step-num{background:var(--green)}
+  .step.cyan .step-num{background:var(--cyan)}
+  .step-content{flex:1;padding-top:4px}
+  .step-title{font-weight:700;font-size:15px;margin-bottom:4px}
+  .step-body{font-size:13px;color:var(--muted);line-height:1.55}
+  .step-body b{color:var(--ink);font-weight:600}
+
+  /* METRONOME */
+  .metro{
+    text-align:center;padding:20px 16px;
+  }
+  .metro-bpm{
+    font-family:'Bebas Neue',sans-serif;
+    font-size:80px;line-height:0.9;
+    color:var(--red);
+    text-shadow:0 0 30px rgba(255,59,59,0.3);
+  }
+  .metro-unit{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);letter-spacing:3px}
+  .metro-ring{
+    width:180px;height:180px;margin:20px auto;
+    border-radius:50%;
+    border:3px solid rgba(255,59,59,0.2);
+    position:relative;
+    display:flex;align-items:center;justify-content:center;
+    transition:transform 0.1s;
+  }
+  .metro-ring.active{
+    animation:metroBeat 0.5s infinite;
+  }
+  @keyframes metroBeat{
+    0%,100%{transform:scale(1);border-color:rgba(255,59,59,0.2);box-shadow:0 0 0 0 rgba(255,59,59,0)}
+    50%{transform:scale(1.08);border-color:var(--red);box-shadow:0 0 40px rgba(255,59,59,0.5)}
+  }
+  .metro-inner{
+    font-family:'Bebas Neue',sans-serif;
+    font-size:44px;
+    color:var(--ink);
+  }
+  .metro-inner small{display:block;font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:2px;margin-top:4px}
+  .metro-controls{display:flex;gap:8px;margin-top:16px;justify-content:center;flex-wrap:wrap}
+
+  /* BIG BUTTON */
+  .btn{
+    background:var(--surface2);
+    color:var(--ink);
+    border:1px solid var(--line);
+    padding:13px 20px;
+    border-radius:10px;
+    font-family:'DM Mono',monospace;
+    font-size:12px;letter-spacing:1.5px;
+    text-transform:uppercase;
+    cursor:pointer;font-weight:500;
+    display:inline-flex;align-items:center;gap:8px;justify-content:center;
+  }
+  .btn.primary{background:var(--red);border-color:var(--red);color:#fff}
+  .btn.green{background:var(--green);border-color:var(--green);color:#fff}
+  .btn.block{width:100%;padding:15px}
+
+  /* FACTS */
+  .facts{
+    display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;
+  }
+  .fact{
+    background:var(--surface2);padding:12px;border-radius:10px;
+    border:1px solid var(--line);
+  }
+  .fact-label{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:1px;text-transform:uppercase}
+  .fact-value{font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--red);line-height:1;margin-top:4px}
+  .fact-value.sm{font-size:18px}
+
+  /* WARNING BOX */
+  .warn{
+    background:rgba(255,59,59,0.08);
+    border:1px solid rgba(255,59,59,0.3);
+    border-radius:10px;padding:12px;
+    display:flex;gap:10px;align-items:flex-start;
+    font-size:13px;line-height:1.5;
+    margin:10px 0;
+  }
+  .warn .ico{flex:0 0 auto;font-size:18px}
+  .warn.amber{background:rgba(255,176,32,0.08);border-color:rgba(255,176,32,0.3);color:#ffd97a}
+  .warn.green{background:rgba(34,197,94,0.08);border-color:rgba(34,197,94,0.3)}
+  .warn.cyan{background:rgba(56,189,248,0.08);border-color:rgba(56,189,248,0.3)}
+
+  /* SCENARIO NAV */
+  .scenario-grid{
+    display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;
+  }
+  .scenario-card{
+    background:var(--surface);border:1px solid var(--line);
+    border-radius:14px;padding:16px 14px;
+    cursor:pointer;text-align:left;color:var(--ink);
+    font-family:'Space Grotesk',sans-serif;
+    transition:all 0.15s;
+    position:relative;overflow:hidden;
+  }
+  .scenario-card:active{transform:scale(0.97)}
+  .scenario-card .ico{font-size:32px;margin-bottom:8px;display:block}
+  .scenario-card .ttl{font-weight:700;font-size:14px;letter-spacing:0.3px}
+  .scenario-card .sub{font-size:11px;color:var(--muted);margin-top:2px}
+  .scenario-card.red::before{content:"";position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,59,59,0.12),transparent 60%);pointer-events:none}
+  .scenario-card.amber::before{content:"";position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,176,32,0.1),transparent 60%);pointer-events:none}
+  .scenario-card.cyan::before{content:"";position:absolute;inset:0;background:linear-gradient(135deg,rgba(56,189,248,0.1),transparent 60%);pointer-events:none}
+  .scenario-card.green::before{content:"";position:absolute;inset:0;background:linear-gradient(135deg,rgba(34,197,94,0.1),transparent 60%);pointer-events:none}
+
+  /* ILLUSTRATION */
+  .illu{
+    background:var(--surface2);border-radius:12px;
+    padding:20px;margin:12px 0;
+    display:flex;justify-content:center;
+  }
+
+  /* CHECK / CROSS LIST */
+  .checklist{list-style:none;font-size:13px;line-height:1.7}
+  .checklist li{padding-left:24px;position:relative;margin-bottom:4px}
+  .checklist li::before{
+    content:"✓";position:absolute;left:0;top:0;
+    color:var(--green);font-weight:700;
+  }
+  .checklist.cross li::before{content:"✗";color:var(--red)}
+
+  /* AED INFO */
+  .aed-badge{
+    display:inline-block;background:var(--green);color:#000;
+    font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:2px;
+    padding:4px 10px;border-radius:4px;margin-right:8px;
+  }
+
+  /* QUICK ACCESS */
+  .quick-row{
+    display:flex;gap:8px;overflow-x:auto;padding-bottom:8px;
+    margin:0 -14px 16px;padding:0 14px 10px;
+  }
+  .quick-row::-webkit-scrollbar{display:none}
+  .quick-chip{
+    flex:0 0 auto;background:var(--surface);border:1px solid var(--line);
+    padding:8px 14px;border-radius:50px;
+    font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1px;
+    color:var(--muted);cursor:pointer;text-transform:uppercase;
+  }
+  .quick-chip.urgent{color:var(--red);border-color:rgba(255,59,59,0.4)}
+
+  /* Utility */
+  .mb-0{margin-bottom:0}
+  .mt-8{margin-top:8px}
+  .center{text-align:center}
+
+  /* WAKE LOCK NOTICE */
+  .wake-notice{
+    font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);
+    letter-spacing:1px;text-align:center;margin-top:8px;
+  }
+  .wake-notice b{color:var(--green)}
+</style>
+</head>
+<body>
+
+<div class="disclaimer-banner">
+  <span style="font-size:16px">ℹ</span>
+  <div>
+    <b>Guida educativa, non sostituisce un corso BLS.</b> Basata su linee guida ERC/AHA 2025. In caso di emergenza chiama subito il <b>112</b>.
+  </div>
+</div>
+
+<header>
+  <div class="brand">
+    <div class="brand-logo">PRIMO SOCCORSO</div>
+    <div class="brand-sub">BLS · GUIDA</div>
+  </div>
+  <div class="srcnote">Fonti: ERC 2025 · AHA 2025 · IRC Italia</div>
+</header>
+
+<main>
+
+  <nav class="tabnav">
+    <button class="tab-btn active" data-tab="home">🏠 Home</button>
+    <button class="tab-btn" data-tab="cpr">❤️ RCP</button>
+    <button class="tab-btn" data-tab="choke">🫁 Soffocamento</button>
+    <button class="tab-btn" data-tab="burn">🔥 Ustioni</button>
+    <button class="tab-btn" data-tab="recov">🛌 Pos. Sicurezza</button>
+    <button class="tab-btn" data-tab="bleed">🩸 Emorragie</button>
+  </nav>
+
+  <!-- HOME -->
+  <section class="section active" id="sec-home">
+    <div class="section-title">COSA È SUCCESSO?</div>
+    <div class="section-sub">Seleziona la situazione. In ogni caso: <b style="color:var(--red)">chiama il 112</b> il prima possibile.</div>
+
+    <div class="scenario-grid">
+      <button class="scenario-card red" onclick="go('cpr')">
+        <span class="ico">❤️</span>
+        <div class="ttl">Non respira</div>
+        <div class="sub">Arresto cardiaco · RCP</div>
+      </button>
+      <button class="scenario-card amber" onclick="go('choke')">
+        <span class="ico">🫁</span>
+        <div class="ttl">Sta soffocando</div>
+        <div class="sub">Corpo estraneo</div>
+      </button>
+      <button class="scenario-card red" onclick="go('bleed')">
+        <span class="ico">🩸</span>
+        <div class="ttl">Sanguina molto</div>
+        <div class="sub">Emorragia grave</div>
+      </button>
+      <button class="scenario-card amber" onclick="go('burn')">
+        <span class="ico">🔥</span>
+        <div class="ttl">Si è ustionato</div>
+        <div class="sub">Ustione termica</div>
+      </button>
+      <button class="scenario-card cyan" onclick="go('recov')">
+        <span class="ico">🛌</span>
+        <div class="ttl">Incosciente ma respira</div>
+        <div class="sub">Posizione sicurezza</div>
+      </button>
+      <button class="scenario-card green" onclick="go('chain')">
+        <span class="ico">🔗</span>
+        <div class="ttl">Catena sopravvivenza</div>
+        <div class="sub">I 6 passi chiave</div>
+      </button>
+    </div>
+
+    <div class="card cyan">
+      <div style="font-family:'Bebas Neue';font-size:20px;letter-spacing:2px;margin-bottom:6px">PRIMA DI AGIRE</div>
+      <ul class="checklist">
+        <li><b>Sicurezza scena</b> — controlla traffico, fuoco, elettricità, gas. Non diventare la prossima vittima.</li>
+        <li><b>Valuta coscienza</b> — chiama la persona, scuoti delicatamente le spalle.</li>
+        <li><b>Chiama il 112</b> — o fai chiamare qualcuno. Metti in vivavoce.</li>
+        <li><b>Apri via aerea</b> — iperestensione del capo + sollevamento mento.</li>
+        <li><b>Osserva il respiro</b> — max 10 secondi: guarda petto, ascolta, senti aria.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div style="font-family:'Bebas Neue';font-size:20px;letter-spacing:2px;margin-bottom:6px">NUMERI EMERGENZA ITALIA</div>
+      <div class="facts">
+        <div class="fact"><div class="fact-label">Numero unico</div><div class="fact-value">112</div></div>
+        <div class="fact"><div class="fact-label">Soccorso sanitario</div><div class="fact-value">118</div></div>
+        <div class="fact"><div class="fact-label">Antincendio</div><div class="fact-value sm">115</div></div>
+        <div class="fact"><div class="fact-label">Antiveleni Milano</div><div class="fact-value sm">02 66101029</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CPR -->
+  <section class="section" id="sec-cpr">
+    <div class="section-title">RCP ADULTO</div>
+    <div class="section-sub">Rianimazione cardiopolmonare — persona incosciente che non respira o respira in modo anomalo.</div>
+
+    <div class="warn">
+      <span class="ico">⚠️</span>
+      <div>Prima di iniziare: <b>scena sicura</b>, <b>chiama 112</b>, <b>chiedi DAE</b> a chi è vicino. Non perdere tempo a cercare il polso — se non respira normalmente, inizia le compressioni.</div>
+    </div>
+
+    <div class="card">
+      <div style="font-family:'Bebas Neue';font-size:24px;letter-spacing:2px;margin-bottom:4px">PARAMETRI CHIAVE</div>
+      <div class="facts">
+        <div class="fact"><div class="fact-label">Frequenza</div><div class="fact-value">100–120</div><div class="fact-label" style="margin-top:2px">al minuto</div></div>
+        <div class="fact"><div class="fact-label">Profondità</div><div class="fact-value">5–6</div><div class="fact-label" style="margin-top:2px">cm</div></div>
+        <div class="fact"><div class="fact-label">Rapporto</div><div class="fact-value">30:2</div><div class="fact-label" style="margin-top:2px">compr : ventilazioni</div></div>
+        <div class="fact"><div class="fact-label">Se non addestrato</div><div class="fact-value sm">SOLO MANI</div><div class="fact-label" style="margin-top:2px">compressioni continue</div></div>
+      </div>
+    </div>
+
+    <!-- METRONOME -->
+    <div class="card red">
+      <div style="font-family:'Bebas Neue';font-size:24px;letter-spacing:2px;margin-bottom:4px">METRONOMO 110 BPM</div>
+      <div class="section-sub mb-0">Segui il ritmo per le compressioni. Premi fino a 5–6 cm.</div>
+      <div class="metro">
+        <div class="metro-ring" id="metroRing">
+          <div class="metro-inner" id="metroCount">0<small>COMPRESSIONI</small></div>
+        </div>
+        <div class="metro-controls">
+          <button class="btn primary" id="metroBtn" onclick="toggleMetro()">▶ AVVIA</button>
+          <button class="btn" onclick="resetMetro()">RESET</button>
+        </div>
+        <div class="wake-notice"><b>TIP:</b> tieni il telefono sveglio durante la RCP</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div style="font-family:'Bebas Neue';font-size:24px;letter-spacing:2px;margin-bottom:8px">SEQUENZA</div>
+
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <div class="step-title">Scena sicura + valuta coscienza</div>
+          <div class="step-body">Scuoti le spalle, chiama forte. Nessuna risposta? <b>Chiama 112 in vivavoce</b>. Fai portare un DAE se c'è.</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <div class="step-title">Apri vie aeree e valuta respiro</div>
+          <div class="step-body">Iperestensione capo + sollevamento mento. Osserva il torace per <b>max 10 secondi</b>. Gasping (respiro agonico rumoroso e irregolare) = <b>NON è respiro normale</b>, inizia subito RCP.</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <div class="step-title">Posizione mani</div>
+          <div class="step-body">Metà inferiore dello sterno, al <b>centro del torace</b>. Tallone di una mano, l'altra sopra con dita intrecciate. Braccia tese, spalle sopra le mani.</div>
+        </div>
+      </div>
+
+      <div class="step red">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <div class="step-title">30 compressioni toraciche</div>
+          <div class="step-body"><b>Profondità 5–6 cm</b>, ritmo <b>100–120/min</b>. Lascia il torace risalire completamente dopo ogni compressione (no leaning). Conta ad alta voce.</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-content">
+          <div class="step-title">2 ventilazioni (se addestrato)</div>
+          <div class="step-body">Iperestensione + chiudi naso + bocca a bocca. Insuffla <b>1 secondo ciascuna</b>, quanto basta per far sollevare il torace. Se non sai farle o non vuoi → <b>solo compressioni continue</b>.</div>
+        </div>
+      </div>
+
+      <div class="step red">
+        <div class="step-num">6</div>
+        <div class="step-content">
+          <div class="step-title">Continua cicli 30:2</div>
+          <div class="step-body">Non fermarti fino a: arrivo DAE/soccorsi, la persona riprende coscienza, sei esausto. Se siete in due, <b>cambio ogni 2 minuti</b> per non perdere efficacia.</div>
+        </div>
+      </div>
+
+      <div class="step green">
+        <div class="step-num">7</div>
+        <div class="step-content">
+          <div class="step-title">DAE appena arriva</div>
+          <div class="step-body">Accendi → segui <b>le istruzioni vocali</b>. Attacca le piastre a torace nudo (asciugalo se bagnato). Nessuno tocca il paziente durante l'analisi o lo shock. Riprendi subito RCP dopo lo shock.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="warn amber">
+      <span class="ico">⚠</span>
+      <div><b>Gravidanza (dopo 20ª settimana):</b> sposta manualmente l'utero a sinistra durante le compressioni per ridurre la compressione della vena cava.</div>
+    </div>
+
+    <div class="warn cyan">
+      <span class="ico">🧒</span>
+      <div><b>Bambini (1 anno – pubertà):</b> 5 ventilazioni iniziali prima delle compressioni. Usa 1 o 2 mani, profondità <b>~5 cm</b> (1/3 del torace). Rapporto 30:2 (15:2 se due soccorritori addestrati).</div>
+    </div>
+
+    <div class="warn cyan">
+      <span class="ico">👶</span>
+      <div><b>Lattanti (&lt;1 anno):</b> 5 ventilazioni iniziali. Due dita al centro del torace sotto la linea dei capezzoli, profondità <b>~4 cm</b>. Rapporto 30:2.</div>
+    </div>
+  </section>
+
+  <!-- CHOKING -->
+  <section class="section" id="sec-choke">
+    <div class="section-title">SOFFOCAMENTO</div>
+    <div class="section-sub">Ostruzione delle vie aeree da corpo estraneo (cibo, oggetto). Adulto o bambino.</div>
+
+    <div class="card amber">
+      <div style="font-family:'Bebas Neue';font-size:22px;letter-spacing:2px;margin-bottom:4px">PRIMA VALUTA: È GRAVE?</div>
+
+      <div style="display:grid;gap:10px;margin-top:10px">
+        <div style="background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.3);border-radius:10px;padding:12px">
+          <div style="color:var(--green);font-weight:700;font-size:13px;margin-bottom:4px">🟢 OSTRUZIONE LIEVE</div>
+          <div style="font-size:13px;color:var(--muted)">Tossisce con forza, parla, respira male ma respira.<br><b style="color:var(--ink)">→ Incoraggialo a tossire.</b> Non fare nulla, resta vicino.</div>
+        </div>
+        <div style="background:rgba(255,59,59,0.08);border:1px solid rgba(255,59,59,0.3);border-radius:10px;padding:12px">
+          <div style="color:var(--red);font-weight:700;font-size:13px;margin-bottom:4px">🔴 OSTRUZIONE GRAVE</div>
+          <div style="font-size:13px;color:var(--muted)">Non riesce a parlare, tosse debole/assente, cianosi, mano alla gola.<br><b style="color:var(--ink)">→ Agisci SUBITO. Chiama/fai chiamare 112.</b></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card red">
+      <div style="font-family:'Bebas Neue';font-size:22px;letter-spacing:2px;margin-bottom:8px">SEQUENZA ADULTO COSCIENTE</div>
+
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <div class="step-title">5 pacche interscapolari</div>
+          <div class="step-body">Mettiti <b>di lato e dietro</b>. Una mano sul torace, piega la persona in avanti. Con il tallone dell'altra mano <b>5 colpi decisi fra le scapole</b>. Controlla dopo ogni colpo se il corpo estraneo è uscito.</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <div class="step-title">5 compressioni addominali (Heimlich)</div>
+          <div class="step-body">Se le pacche non funzionano: dietro la persona, <b>pugno sopra l'ombelico e sotto lo sterno</b>, afferra con l'altra mano. <b>5 spinte decise verso l'interno e verso l'alto</b>.</div>
+        </div>
+      </div>
+
+      <div class="step red">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <div class="step-title">Alterna 5 + 5</div>
+          <div class="step-body">Continua cicli di 5 pacche + 5 Heimlich finché l'oggetto esce o la persona perde coscienza.</div>
+        </div>
+      </div>
+
+      <div class="step red">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <div class="step-title">Se perde coscienza → RCP</div>
+          <div class="step-body">Adagia a terra delicatamente. Inizia <b>RCP 30:2</b> subito. Prima di ogni ventilazione, guarda in bocca: se vedi l'oggetto e lo puoi prendere, rimuovilo. <b>Mai finger-sweep alla cieca.</b></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="warn amber">
+      <span class="ico">🤰</span>
+      <div><b>Gravidanza avanzata o persona molto obesa:</b> invece dell'Heimlich, fai <b>compressioni toraciche</b> (come quelle della RCP ma con la persona in piedi, mani al centro dello sterno).</div>
+    </div>
+
+    <div class="warn cyan">
+      <span class="ico">👶</span>
+      <div><b>Lattante (&lt;1 anno):</b> MAI Heimlich. Appoggialo a pancia in giù sul tuo avambraccio, testa più bassa del tronco. <b>5 pacche fra le scapole</b>, poi giralo e fai <b>5 compressioni toraciche con 2 dita</b>. Alterna finché non esce o diventa incosciente.</div>
+    </div>
+
+    <div class="warn">
+      <span class="ico">🏥</span>
+      <div><b>Dopo la risoluzione:</b> chiunque abbia ricevuto pacche o compressioni addominali deve essere visitato in ospedale per escludere lesioni interne.</div>
+    </div>
+  </section>
+
+  <!-- BURNS -->
+  <section class="section" id="sec-burn">
+    <div class="section-title">USTIONI</div>
+    <div class="section-sub">Termiche (fuoco, liquidi caldi, vapore). Agisci in fretta — i primi minuti contano.</div>
+
+    <div class="card red">
+      <div style="font-family:'Bebas Neue';font-size:24px;letter-spacing:2px;margin-bottom:8px">I 4 PASSI</div>
+
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <div class="step-title">Allontana la causa</div>
+          <div class="step-body">Spegni le fiamme (non far correre, fai rotolare a terra con coperta). Stacca la fonte di calore/corrente. <b>Rimuovi vestiti caldi o bagnati</b> dalla zona ustionata <b>SOLO se non sono attaccati alla pelle</b>.</div>
+        </div>
+      </div>
+
+      <div class="step cyan">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <div class="step-title">Raffredda con acqua corrente</div>
+          <div class="step-body"><b>Acqua fresca (non ghiacciata) a temperatura ambiente/rubinetto per 20 minuti</b>. Appena possibile, entro 3 ore dall'ustione. Copre solo la zona ustionata per evitare ipotermia, specie nei bambini.</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <div class="step-title">Togli anelli, bracciali, cinture</div>
+          <div class="step-body">Dalla zona interessata, <b>prima che si gonfi</b>. Ma senza forzare: se non viene via, lascia perdere.</div>
+        </div>
+      </div>
+
+      <div class="step green">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <div class="step-title">Copri con medicazione pulita</div>
+          <div class="step-body">Telo pulito, pellicola alimentare trasparente, o garza sterile. <b>Non stretta</b>, solo per proteggere.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card red">
+      <div style="font-family:'Bebas Neue';font-size:22px;letter-spacing:2px;margin-bottom:8px">NON FARE MAI</div>
+      <ul class="checklist cross">
+        <li>NON applicare ghiaccio diretto — può peggiorare il danno</li>
+        <li>NON mettere olio, dentifricio, burro, albume, aceto, rimedi casalinghi</li>
+        <li>NON rompere le bolle</li>
+        <li>NON staccare vestiti attaccati alla pelle</li>
+        <li>NON applicare cotone idrofilo diretto sull'ustione</li>
+        <li>NON usare creme o pomate senza indicazione medica</li>
+      </ul>
+    </div>
+
+    <div class="card amber">
+      <div style="font-family:'Bebas Neue';font-size:22px;letter-spacing:2px;margin-bottom:8px">QUANDO ANDARE IN PS/118</div>
+      <ul class="checklist">
+        <li>Ustione più grande del <b>palmo della mano</b> della vittima</li>
+        <li>Volto, mani, piedi, genitali, articolazioni</li>
+        <li>Ustione a tutto spessore (pelle bianca/nera/carbonizzata, indolore)</li>
+        <li>Ustioni circonferenziali (avvolgono un arto)</li>
+        <li>Inalazione di fumo, ustioni in bocca o alle vie aeree</li>
+        <li>Ustioni elettriche o chimiche (anche se sembrano piccole)</li>
+        <li>Bambini piccoli, anziani, gravide</li>
+        <li>Segni di shock: pallore, sudorazione fredda, confusione</li>
+      </ul>
+    </div>
+
+    <div class="warn amber">
+      <span class="ico">⚡</span>
+      <div><b>Ustione elettrica:</b> stacca SEMPRE la corrente prima di toccare. Rischio arresto cardiaco — chiama 112 subito, anche se l'ustione sembra piccola (il danno interno può essere grave).</div>
+    </div>
+
+    <div class="warn amber">
+      <span class="ico">⚗️</span>
+      <div><b>Ustione chimica:</b> rimuovi i vestiti contaminati, sciacqua con <b>tantissima acqua corrente per 20+ minuti</b>. Chiama Centro Antiveleni Milano 02 66101029.</div>
+    </div>
+  </section>
+
+  <!-- RECOVERY POSITION -->
+  <section class="section" id="sec-recov">
+    <div class="section-title">POSIZIONE LATERALE DI SICUREZZA (PLS)</div>
+    <div class="section-sub">Per chi è <b>incosciente ma respira normalmente</b>. Protegge le vie aeree da vomito/saliva.</div>
+
+    <div class="warn amber">
+      <span class="ico">⚠</span>
+      <div>Se <b>non respira</b> o respira in modo anomalo (gasping) → <b>NON usare PLS</b>, inizia RCP. Se sospetti trauma cervicale, muovi la persona solo se necessario per mantenere la via aerea.</div>
+    </div>
+
+    <div class="card cyan">
+      <div style="font-family:'Bebas Neue';font-size:24px;letter-spacing:2px;margin-bottom:8px">SEQUENZA</div>
+
+      <div class="step cyan">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <div class="step-title">Posizione iniziale</div>
+          <div class="step-body">Inginocchiati di fianco. Raddrizza le gambe della persona. Rimuovi occhiali se ci sono.</div>
+        </div>
+      </div>
+
+      <div class="step cyan">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <div class="step-title">Braccio vicino a te</div>
+          <div class="step-body">Prendi il braccio più vicino a te e <b>piegalo ad angolo retto</b> rispetto al corpo, con il palmo rivolto verso l'alto.</div>
+        </div>
+      </div>
+
+      <div class="step cyan">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <div class="step-title">Braccio opposto sotto la guancia</div>
+          <div class="step-body">Prendi l'altro braccio e porta il <b>dorso della mano contro la guancia della persona</b> (lato vicino a te). Tieni la sua mano lì.</div>
+        </div>
+      </div>
+
+      <div class="step cyan">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <div class="step-title">Piega il ginocchio lontano</div>
+          <div class="step-body">Con l'altra mano afferra il <b>ginocchio opposto a te</b> (quello lontano) e piegalo, tenendo il piede a terra.</div>
+        </div>
+      </div>
+
+      <div class="step cyan">
+        <div class="step-num">5</div>
+        <div class="step-content">
+          <div class="step-title">Ruota verso di te</div>
+          <div class="step-body">Tirando sul ginocchio piegato, fai <b>rotolare la persona su un fianco</b>, verso di te. La mano sotto la guancia farà da cuscino.</div>
+        </div>
+      </div>
+
+      <div class="step cyan">
+        <div class="step-num">6</div>
+        <div class="step-content">
+          <div class="step-title">Stabilizza e controlla</div>
+          <div class="step-body">Sistema il ginocchio piegato a <b>90°</b> per stabilità. Iperestendi leggermente il capo per tenere la via aerea libera. <b>Controlla il respiro ogni minuto</b> fino all'arrivo dei soccorsi.</div>
+        </div>
+      </div>
+
+      <div class="step amber">
+        <div class="step-num">7</div>
+        <div class="step-content">
+          <div class="step-title">Cambia lato dopo 30 minuti</div>
+          <div class="step-body">Se i soccorsi tardano, ruotala sull'altro fianco dopo mezz'ora per evitare compressione nervosa.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BLEEDING -->
+  <section class="section" id="sec-bleed">
+    <div class="section-title">EMORRAGIE</div>
+    <div class="section-sub">Sanguinamento esterno importante — priorità assoluta: <b>fermare il sangue</b>.</div>
+
+    <div class="warn">
+      <span class="ico">🧤</span>
+      <div>Se possibile indossa guanti. Se non ce li hai, usa una barriera (sacchetto di plastica pulito) per ridurre il rischio di contatto con il sangue.</div>
+    </div>
+
+    <div class="card red">
+      <div style="font-family:'Bebas Neue';font-size:24px;letter-spacing:2px;margin-bottom:8px">SEQUENZA</div>
+
+      <div class="step red">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <div class="step-title">Pressione diretta sulla ferita</div>
+          <div class="step-body">Con un <b>tampone pulito</b> (garza, telo, maglietta). Premi <b>forte e continuo</b>. Non rimuovere il tampone se si imbeve: <b>aggiungi sopra</b>.</div>
+        </div>
+      </div>
+
+      <div class="step red">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <div class="step-title">Chiama il 112</div>
+          <div class="step-body">Mentre tieni la pressione. Metti in vivavoce. Descrivi la ferita e la quantità di sangue.</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <div class="step-title">Solleva l'arto (se possibile)</div>
+          <div class="step-body">Se la ferita è su un braccio/gamba e non sospetti una frattura, <b>sollevala sopra il livello del cuore</b>. Continua a premere.</div>
+        </div>
+      </div>
+
+      <div class="step amber">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <div class="step-title">Bendaggio compressivo</div>
+          <div class="step-body">Se il sangue non si ferma e hai bende, fascia <b>sopra il tampone</b> con pressione uniforme. Controlla che la persona possa muovere le dita (no troppo stretto).</div>
+        </div>
+      </div>
+
+      <div class="step red">
+        <div class="step-num">5</div>
+        <div class="step-content">
+          <div class="step-title">Laccio emostatico (solo casi estremi)</div>
+          <div class="step-body">SOLO se emorragia massiva su arto <b>non controllabile</b> con la pressione e vita a rischio. Applica <b>sopra la ferita</b>, stringi finché il sangue si ferma. <b>Annota l'ora</b> sulla vittima. Non toglierlo — lo farà solo l'ospedale.</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">6</div>
+        <div class="step-content">
+          <div class="step-title">Previeni lo shock</div>
+          <div class="step-body">Fai stendere la persona. Copri con una coperta. Parla e rassicura. <b>Non dare da bere o mangiare.</b> Se perde coscienza ma respira → PLS.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="warn amber">
+      <span class="ico">🔪</span>
+      <div><b>Corpo estraneo conficcato</b> (coltello, pezzo di vetro, legno): <b>NON rimuoverlo</b>. Stabilizzalo con bende attorno e trasporta così in ospedale. Rimuoverlo può causare emorragia peggiore.</div>
+    </div>
+
+    <div class="warn cyan">
+      <span class="ico">👃</span>
+      <div><b>Epistassi (sangue dal naso):</b> testa <b>leggermente in avanti</b> (non indietro), pinza la parte molle del naso per 10-15 minuti continui. Se non si ferma in 20 min → medico.</div>
+    </div>
+  </section>
+
+  <!-- CHAIN OF SURVIVAL -->
+  <section class="section" id="sec-chain">
+    <div class="section-title">CATENA DELLA SOPRAVVIVENZA</div>
+    <div class="section-sub">I 6 anelli che massimizzano le probabilità di sopravvivere a un arresto cardiaco.</div>
+
+    <div class="card">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <div class="step-title">Riconoscimento precoce</div>
+          <div class="step-body">Identificare arresto cardiaco (incosciente + non respira normalmente) nei primi secondi.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <div class="step-title">Attivazione sistema emergenza</div>
+          <div class="step-body">Chiamata al 112 il prima possibile. L'operatore guida anche nella RCP telefonica.</div>
+        </div>
+      </div>
+      <div class="step red">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <div class="step-title">RCP di alta qualità precoce</div>
+          <div class="step-body">Bystander CPR: ogni minuto senza RCP = <b>10% di sopravvivenza in meno</b>.</div>
+        </div>
+      </div>
+      <div class="step green">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <div class="step-title">Defibrillazione precoce (DAE)</div>
+          <div class="step-body">Il DAE è automatico e parla: chiunque può usarlo. Cerca segnaletica AED nei luoghi pubblici.</div>
+        </div>
+      </div>
+      <div class="step cyan">
+        <div class="step-num">5</div>
+        <div class="step-content">
+          <div class="step-title">Cure post-rianimazione</div>
+          <div class="step-body">Gestione in terapia intensiva: controllo temperatura, ossigenazione, neuroprotezione.</div>
+        </div>
+      </div>
+      <div class="step cyan">
+        <div class="step-num">6</div>
+        <div class="step-content">
+          <div class="step-title">Recupero</div>
+          <div class="step-body">Riabilitazione fisica, cognitiva ed emotiva. Supporto a sopravvissuti e famiglie.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card cyan">
+      <div style="font-family:'Bebas Neue';font-size:20px;letter-spacing:2px;margin-bottom:6px">VAI A UN CORSO</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.6">
+        Questa app è una guida rapida, ma <b style="color:var(--ink)">leggere non basta</b>. Un corso BLSD di 5 ore fa la differenza. Cerca:
+        <ul class="checklist" style="margin-top:8px">
+          <li>IRC (Italian Resuscitation Council)</li>
+          <li>Croce Rossa Italiana (CRI)</li>
+          <li>Anpas / Misericordie</li>
+          <li>Centri accreditati regionali</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- SOS FIXED BAR -->
+<div class="sos-bar">
+  <a href="tel:112" class="sos-btn">📞 CHIAMA 112</a>
+  <a href="tel:118" class="sos-btn sec">118</a>
+</div>
+
+<script>
+// ============ TABS / NAV ============
+const tabs = document.querySelectorAll('.tab-btn');
+const sections = document.querySelectorAll('.section');
+tabs.forEach(t=>t.onclick=()=>go(t.dataset.tab));
+function go(id){
+  // Handle sub-sections not in nav (like 'chain')
+  const hasNav = [...tabs].some(t=>t.dataset.tab===id);
+  tabs.forEach(t=>t.classList.toggle('active', t.dataset.tab===id));
+  sections.forEach(s=>s.classList.toggle('active', s.id==='sec-'+id));
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(!hasNav){
+    // highlight home as fallback
+    tabs[0].classList.remove('active');
+  }
+}
+
+// ============ METRONOME ============
+const BPM = 110;
+const INTERVAL_MS = 60000/BPM; // ~545ms
+let metroRunning = false;
+let metroTimer = null;
+let metroCount = 0;
+let audioCtx = null;
+let wakeLock = null;
+
+function beep(){
+  try{
+    if(!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    const o = audioCtx.createOscillator();
+    const g = audioCtx.createGain();
+    o.type='sine';
+    // emphasize every 30th
+    const isAccent = (metroCount % 30 === 1);
+    o.frequency.value = isAccent ? 1200 : 880;
+    g.gain.setValueAtTime(0, audioCtx.currentTime);
+    g.gain.linearRampToValueAtTime(isAccent ? 0.35 : 0.22, audioCtx.currentTime+0.005);
+    g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime+0.08);
+    o.connect(g).connect(audioCtx.destination);
+    o.start();
+    o.stop(audioCtx.currentTime+0.09);
+  }catch(e){/* silent */}
+}
+
+async function requestWakeLock(){
+  try{
+    if('wakeLock' in navigator){
+      wakeLock = await navigator.wakeLock.request('screen');
+    }
+  }catch(e){/* not supported */}
+}
+function releaseWakeLock(){
+  if(wakeLock){wakeLock.release().catch(()=>{});wakeLock=null;}
+}
+
+function tickMetro(){
+  metroCount++;
+  beep();
+  const ring = document.getElementById('metroRing');
+  const counter = document.getElementById('metroCount');
+  ring.classList.remove('active');
+  void ring.offsetWidth; // reflow
+  ring.classList.add('active');
+  // Every 30 compressions signal "2 ventilazioni"
+  if(metroCount % 30 === 0){
+    counter.innerHTML = `${metroCount}<small>2 VENTILAZIONI</small>`;
+    if(navigator.vibrate) navigator.vibrate([80,40,80,40,120]);
+  } else {
+    counter.innerHTML = `${metroCount}<small>COMPRESSIONI</small>`;
+    if(navigator.vibrate) navigator.vibrate(30);
+  }
+}
+
+function toggleMetro(){
+  const btn = document.getElementById('metroBtn');
+  if(metroRunning){
+    clearInterval(metroTimer);
+    metroTimer = null;
+    metroRunning = false;
+    btn.textContent = '▶ RIPRENDI';
+    document.getElementById('metroRing').classList.remove('active');
+    releaseWakeLock();
+  } else {
+    // Resume/Start
+    if(audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+    requestWakeLock();
+    metroRunning = true;
+    btn.textContent = '⏸ PAUSA';
+    tickMetro(); // immediate first beat
+    metroTimer = setInterval(tickMetro, INTERVAL_MS);
+  }
+}
+
+function resetMetro(){
+  if(metroRunning) toggleMetro();
+  metroCount = 0;
+  document.getElementById('metroCount').innerHTML = `0<small>COMPRESSIONI</small>`;
+  document.getElementById('metroBtn').textContent = '▶ AVVIA';
+  document.getElementById('metroRing').classList.remove('active');
+}
+
+// Re-request wake lock on visibility
+document.addEventListener('visibilitychange',()=>{
+  if(document.visibilityState === 'visible' && metroRunning){
+    requestWakeLock();
+  }
+});
+</script>
+
+</body>
+</html>
