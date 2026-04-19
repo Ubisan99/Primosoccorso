@@ -184,8 +184,8 @@ A tutti gli istruttori BLS volontari che dedicano il loro tempo libero a insegna
 
 ## 📬 Contatti
 
-**Autore**: [il tuo nome / @handle]
-**Progetto correlato**: [BortyDrip](https://github.com/...) — street culture & gaming collectibles
+**Autore**: [Lorenzo Leonardo Bortaccio/ @handle]
+**Progetto correlato**: [Ubisan99](https://github.com/...) — street culture & gaming collectibles
 
 ---
 
